@@ -1,0 +1,81 @@
+Road Map:
+--> Weekly schedule
+    Trello-like board/calendar for tasks/events
+    Measuring goal progress
+    Analytics
+    Automatic scheduling
+    Website
+    Mobile app
+    Watch app
+
+Features to implement:
+- Task
+  - Data
+    - name: str
+    - start_time: datetime.time, end_time: datetime.time
+    - priority: int
+  - Methods
+    - get_points(self)
+- Schedule object
+  - Data
+    - name: str
+    - days: List[List[Task]]
+    - start_date: datetime.date
+  - Methods
+    - set_task_name(self, day: int, task_index: int, name: str)
+    - set_task_start_time(self, day: int, task_index: int, start_time: datetime.time)
+    - set_task_end_time(self, day: int, task_index: int, end_time: datetime.time)
+    - set_task_priority(self, day: int, task_index: int, priority: int)
+    - add_task(self, task: Task) (can only add tasks to free time)
+    - delete_task(self, day: int, task_index: int)
+    - move_tasks(self, day: int, start_task_index: int, end_task_index: int)
+    - load_from(self, Schedule)
+    - total_points(self)
+    - daily_points(self, day: int)
+- ScheduleSession
+  - Constants:
+    - SCHEDULES_DIR
+  - Data:
+    - current_session_name: str
+    - current_planned_schedule: Schedule
+    - current_actual_schedule: Schedule
+    - cursor_day: int
+    - cursor_task: int
+    - cursor_schedule: 0 (indicates whether cursor is on planned or actual)
+    - planned_edit_history: List[Schedule]
+    - planned_actual_history: List[Schedule]
+  - Methods:
+    - edit_task(self, day: int, task_index: int, new_values: Dict[str, Any])
+    - insert_task(self, day: int, task_index: int, task: Task)
+    - delete_task(self, day: int, task_index: int, keep_space: bool = False)
+    - move_tasks(self, day: int, start_task_index: int, end_task_index: int)
+    - save(self)
+    - load(self, schedule_name: str)
+    - new(self, schedule_name: str, base_schedule_name: str = None)
+    - undo(self)
+    - redo(self)
+    - total_score(self)
+    - cumulative_score(self, days: int)
+    - single_score(self, day: int)
+- main (not a class)
+  - Data
+    - session: ScheduleSession
+  - Methods:
+    - main (displays current planned and actual schedule, with point summary and a
+      cursor which hovers over a single task. Cursor can be moved with jkl; and
+      arrow keys, and cursor can skip days by combining any movement with shift.
+      Each of the following options can be chosen with the corresponding key)
+      - e: edit current task
+      - i: insert task before current task
+      - I: insert empty time before current task
+      - a: append task after current task
+      - A: append empty time after current task
+      - d: remove current task
+      - D: remove current task and keep space open
+      - m: move a contiguous set of tasks in time
+      - s: save changes to schedule
+      - q: load another schedule
+      - n: create a new schedule
+      - z: undo last change
+      - r: redo last change
+    - display(session: ScheduleSession)
