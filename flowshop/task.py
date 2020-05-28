@@ -1,6 +1,6 @@
 """ Task object definition. Represents a single task in a schedule. """
 
-import datetime
+from datetime import datetime
 
 
 class Task:
@@ -11,9 +11,9 @@ class Task:
         name: str,
         completed: float = 0.0,
         priority: float = None,
-        start_time: datetime.datetime = None,
-        end_time: datetime.datetime = None,
-    ):
+        start_time: datetime = None,
+        end_time: datetime = None,
+    ) -> None:
         """ Init function for Task object. """
 
         self.name = name
@@ -22,19 +22,23 @@ class Task:
         self.start_time = start_time
         self.end_time = end_time
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """ Returns string representation of task. """
 
-        start_str = self.start_time.strftime("%d/%m/%y %H:%M")
-        end_str = self.end_time.strftime("%d/%m/%y %H:%M")
-        rep = "(%s, %f, %f, %s, %s)" % (self.name, completed, priority, start_str, end_str)
-        return rep
+        state = {
+            "name": self.name,
+            "completed": self.completed,
+            "priority": self.priority,
+            "start_time": self.start_time.strftime("%d/%m/%y %H:%M"),
+            "end_time": self.end_time.strftime("%d/%m/%y %H:%M"),
+        }
+        return str(state)
 
-    def get_total_points(self):
+    def get_total_points(self) -> float:
         """ Computes maximum possible points for completing task. """
         hours = (self.end_time - self.start_time).total_seconds() / 3600
         return self.priority * hours
 
-    def get_points(self):
+    def get_points(self) -> float:
         """ Computes points earned so far based on task completion. """
         return self.get_total_points() * self.completed
