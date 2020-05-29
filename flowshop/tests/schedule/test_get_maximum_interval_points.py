@@ -74,4 +74,3 @@ def test_get_maximum_interval_points_empty():
     start_time = datetime(2020, 4, 1)
     end_time = datetime(2020, 4, 8)
     assert schedule.get_maximum_interval_points(start_time, end_time) == 0.0
-
