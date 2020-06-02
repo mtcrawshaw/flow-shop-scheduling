@@ -3,7 +3,6 @@ Unit test cases for flowshop/task.py.
 """
 
 from datetime import datetime
-from typing import List
 
 
 from flowshop.schedule import Schedule
@@ -22,7 +21,9 @@ def test_add_task_empty():
         start_time=datetime(2020, 5, 1, hour=12),
         end_time=datetime(2020, 5, 1, hour=13, minute=30),
     )
+
     schedule.add_task(task1)
+    assert schedule.tasks == [task1]
 
 
 def test_add_task_one():
@@ -43,6 +44,9 @@ def test_add_task_one():
         start_time=datetime(2020, 5, 1, hour=13, minute=30),
         end_time=datetime(2020, 5, 1, hour=14, minute=30),
     )
+
+    schedule.add_task(task2)
+    assert schedule.tasks == [task1, task2]
 
 
 def test_add_task_incompatible():

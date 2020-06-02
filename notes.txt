@@ -9,10 +9,10 @@ Road Map:
     Watch app
 
 Before merging to master:
-- Lint with ``black flowshop"
-- Maximize pylint score with ``python3 -m pylint flowshop"
-- Fix typing issues with ``mypy flowshop"
-- Make sure all tests pass with ``python3 -m pytest flowshop"
+- Lint with ``black flowshop``
+- Maximize pylint score with ``pylint flowshop``
+- Fix typing issues with ``mypy flowshop``
+- Make sure all tests pass with ``pytest flowshop``
 
 Features to implement:
 - Task

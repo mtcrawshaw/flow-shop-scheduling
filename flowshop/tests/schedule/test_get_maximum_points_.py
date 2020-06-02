@@ -3,7 +3,6 @@ Unit test cases for flowshop/task.py.
 """
 
 from datetime import datetime
-from typing import List
 
 
 from flowshop.schedule import Schedule
