@@ -9,9 +9,9 @@ from flowshop.schedule import Schedule
 from flowshop.task import Task
 
 
-def test_get_earned_points_small():
+def test_maximum_points_small():
     """
-    Test Schedule.get_earned_points() for a small example.
+    Test Schedule.maximum_points() for a small example.
     """
 
     task1 = Task(
@@ -30,13 +30,13 @@ def test_get_earned_points_small():
     )
     schedule = Schedule("test", [task1, task2])
 
-    assert schedule.get_earned_points() == 3.125
+    assert schedule.maximum_points() == 4.25
 
 
-def test_get_earned_points_empty():
+def test_maximum_points_empty():
     """
-    Test Schedule.get_earned_points() for an empty schedule.
+    Test Schedule.maximum_points() for an empty schedule.
     """
 
     schedule = Schedule("test", [])
-    assert schedule.get_earned_points() == 0.0
+    assert schedule.maximum_points() == 0.0

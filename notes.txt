@@ -38,23 +38,19 @@ Features to implement:
     - load_from(self, Schedule)
     - total_points(self)
     - daily_points(self, day: int)
-- ScheduleSession
+- Session
   - Constants:
     - SCHEDULES_DIR
   - Data:
-    - current_session_name: str
-    - current_planned_schedule: Schedule
-    - current_actual_schedule: Schedule
-    - cursor_day: int
-    - cursor_task: int
-    - cursor_schedule: 0 (indicates whether cursor is on planned or actual)
-    - planned_edit_history: List[Schedule]
-    - planned_actual_history: List[Schedule]
+    - name: str
+    - edit_history: List[Tuple[Schedule, Schedule]]
+    - history_pos: int
   - Methods:
     - edit_task(self, day: int, task_index: int, new_values: Dict[str, Any])
     - insert_task(self, day: int, task_index: int, task: Task)
-    - delete_task(self, day: int, task_index: int, keep_space: bool = False)
-    - move_tasks(self, day: int, start_task_index: int, end_task_index: int)
+    - delete_task(self, day: int, task_index: int)
+    - move_tasks(self, day: int, start_task_index: int, end_task_index: int, time_delta:
+      datetime.time_delta)
     - save(self)
     - load(self, schedule_name: str)
     - new(self, schedule_name: str, base_schedule_name: str = None)
@@ -62,10 +58,14 @@ Features to implement:
     - redo(self)
     - total_score(self)
     - cumulative_score(self, days: int)
-    - single_score(self, day: int)
+    - day_score(self, day: int)
 - main (not a class)
   - Data
-    - session: ScheduleSession
+    - session: Session
+    - cursor_day: int
+    - cursor_task: int
+    - cursor_schedule: bool (indicates whether cursor is on planned or actual)
+    - cursor_col: int
   - Methods:
     - main (displays current planned and actual schedule, with point summary and a
       cursor which hovers over a single task. Cursor can be moved with jkl; and
@@ -84,4 +84,4 @@ Features to implement:
       - n: create a new schedule
       - z: undo last change
       - r: redo last change
-    - display(session: ScheduleSession)
+    - display(session: Session)

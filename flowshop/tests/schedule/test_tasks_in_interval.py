@@ -9,9 +9,9 @@ from flowshop.schedule import Schedule
 from flowshop.task import Task
 
 
-def test_get_tasks_in_interval_small():
+def test_tasks_in_interval_small():
     """
-    Test Schedule.get_tasks_in_interval() for a small example.
+    Test Schedule.tasks_in_interval() for a small example.
     """
 
     task1 = Task(
@@ -39,12 +39,12 @@ def test_get_tasks_in_interval_small():
 
     start_time = datetime(2020, 5, 1)
     end_time = datetime(2020, 5, 8)
-    assert schedule.get_tasks_in_interval(start_time, end_time) == [task1, task2]
+    assert schedule.tasks_in_interval(start_time, end_time) == [task1, task2]
 
 
-def test_get_tasks_in_interval_empty():
+def test_tasks_in_interval_empty():
     """
-    Test Schedule.get_tasks_in_interval() for an empty example.
+    Test Schedule.tasks_in_interval() for an empty example.
     """
 
     task1 = Task(
@@ -72,4 +72,4 @@ def test_get_tasks_in_interval_empty():
 
     start_time = datetime(2020, 4, 1)
     end_time = datetime(2020, 4, 8)
-    assert schedule.get_tasks_in_interval(start_time, end_time) == []
+    assert schedule.tasks_in_interval(start_time, end_time) == []

@@ -9,9 +9,9 @@ from flowshop.schedule import Schedule
 from flowshop.task import Task
 
 
-def test_get_earned_interval_points_small():
+def test_earned_interval_points_small():
     """
-    Test Schedule.get_earned_interval_points() for a small example.
+    Test Schedule.earned_interval_points() for a small example.
     """
 
     task1 = Task(
@@ -39,12 +39,12 @@ def test_get_earned_interval_points_small():
 
     start_time = datetime(2020, 5, 1, hour=13, minute=30)
     end_time = datetime(2020, 5, 30)
-    assert schedule.get_earned_interval_points(start_time, end_time) == 3.0
+    assert schedule.earned_interval_points(start_time, end_time) == 3.0
 
 
-def test_get_earned_interval_points_empty():
+def test_earned_interval_points_empty():
     """
-    Test Schedule.get_earned_interval_points() for an empty example.
+    Test Schedule.earned_interval_points() for an empty example.
     """
 
     task1 = Task(
@@ -72,4 +72,4 @@ def test_get_earned_interval_points_empty():
 
     start_time = datetime(2020, 4, 1)
     end_time = datetime(2020, 4, 30)
-    assert schedule.get_earned_interval_points(start_time, end_time) == 0.0
+    assert schedule.earned_interval_points(start_time, end_time) == 0.0

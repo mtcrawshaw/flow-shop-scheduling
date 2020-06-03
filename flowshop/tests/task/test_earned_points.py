@@ -7,9 +7,9 @@ from datetime import datetime
 from flowshop.task import Task
 
 
-def test_get_maximum_points_small():
+def test_earned_points_small():
     """
-    Test Task.get_maximum_points() for a small example.
+    Test Task.earned_points() for a small example.
     """
 
     task = Task(
@@ -19,19 +19,19 @@ def test_get_maximum_points_small():
         start_time=datetime(2020, 5, 1, hour=12),
         end_time=datetime(2020, 5, 1, hour=13, minute=30),
     )
-    assert task.get_maximum_points() == 0.75
+    assert task.earned_points() == 0.375
 
 
-def test_get_maximum_points_empty():
+def test_earned_points_empty():
     """
-    Test Task.get_maximum_points() for a small example.
+    Test Task.earned_points() for a task not yet started.
     """
 
     task = Task(
         "test",
-        priority=0.0,
-        completed=0.5,
+        priority=0.5,
+        completed=0.0,
         start_time=datetime(2020, 5, 1, hour=12),
         end_time=datetime(2020, 5, 1, hour=13, minute=30),
     )
-    assert task.get_maximum_points() == 0.0
+    assert task.earned_points() == 0.0

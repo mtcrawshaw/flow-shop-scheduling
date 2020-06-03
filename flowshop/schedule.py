@@ -57,17 +57,17 @@ class Schedule:
                     % (current_task, next_task)
                 )
 
-    def get_maximum_points(self) -> float:
+    def maximum_points(self) -> float:
         """ Computes maximum possible points for entire schedule. """
 
-        return sum(task.get_maximum_points() for task in self.tasks)
+        return sum(task.maximum_points() for task in self.tasks)
 
-    def get_earned_points(self) -> float:
+    def earned_points(self) -> float:
         """ Computes points earned for entire schedule. """
 
-        return sum(task.get_earned_points() for task in self.tasks)
+        return sum(task.earned_points() for task in self.tasks)
 
-    def get_maximum_interval_points(
+    def maximum_interval_points(
         self, start_time: datetime, end_time: datetime
     ) -> float:
         """
@@ -75,18 +75,18 @@ class Schedule:
         interval.
         """
 
-        tasks_in_interval = self.get_tasks_in_interval(start_time, end_time)
-        return sum(task.get_maximum_points() for task in tasks_in_interval)
+        tasks_in_interval = self.tasks_in_interval(start_time, end_time)
+        return sum(task.maximum_points() for task in tasks_in_interval)
 
-    def get_earned_interval_points(
+    def earned_interval_points(
         self, start_time: datetime, end_time: datetime
     ) -> float:
         """ Computes points earned for all tasks overlapping a given time interval.  """
 
-        tasks_in_interval = self.get_tasks_in_interval(start_time, end_time)
-        return sum(task.get_earned_points() for task in tasks_in_interval)
+        tasks_in_interval = self.tasks_in_interval(start_time, end_time)
+        return sum(task.earned_points() for task in tasks_in_interval)
 
-    def get_tasks_in_interval(
+    def tasks_in_interval(
         self, start_time: datetime, end_time: datetime
     ) -> List[Task]:
         """

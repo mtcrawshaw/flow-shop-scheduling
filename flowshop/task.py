@@ -38,11 +38,11 @@ class Task:
             for var_name in self.state_vars
         )
 
-    def get_maximum_points(self) -> float:
+    def maximum_points(self) -> float:
         """ Computes maximum possible points for completing task. """
         hours = (self.end_time - self.start_time).total_seconds() / 3600
         return self.priority * hours
 
-    def get_earned_points(self) -> float:
+    def earned_points(self) -> float:
         """ Computes points earned so far based on task completion. """
-        return self.get_maximum_points() * self.completed
+        return self.maximum_points() * self.completed
