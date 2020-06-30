@@ -1,18 +1,38 @@
 Road Map:
---> Weekly schedule
+--> Weekly schedule (tasks)
+    Weekly goals
     Trello-like board/calendar for tasks/events
-    Measuring goal progress
+    Longer term goal integration
     Analytics
     Automatic scheduling
     Website
     Mobile app
     Watch app
 
+Current sprint:
+    Task/Schedule classes
+--> Schedule editing with ScheduleSession
+    Runner to interact with session via terminal
+    Dump schedule to google drive
+    Refactoring
+
+Current task (Schedule editing with ScheduleSession):
+--> Functions to edit tasks
+    Undo/redo
+    Scoring
+
+----------------------------------------------------------------------------------------
+
 Before merging to master:
 - Lint with ``black flowshop``
-- Maximize pylint score with ``pylint flowshop``
 - Fix typing issues with ``mypy flowshop``
+- Maximize pylint score with ``pylint flowshop``
 - Make sure all tests pass with ``pytest flowshop``
+
+Refactoring:
+- ?
+
+----------------------------------------------------------------------------------------
 
 Features to implement:
 - Task
