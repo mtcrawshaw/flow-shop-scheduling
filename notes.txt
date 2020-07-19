@@ -1,5 +1,5 @@
 Road Map:
---> Weekly schedule (tasks)
+--> Weekly schedule of tasks
     Weekly goals
     Trello-like board/calendar for tasks/events
     Longer term goal integration
@@ -9,7 +9,7 @@ Road Map:
     Mobile app
     Watch app
 
-Current sprint:
+Current sprint (Weekly schedule of tasks):
     Task/Schedule classes
 --> Schedule editing with ScheduleSession
     Runner to interact with session via terminal
@@ -17,7 +17,8 @@ Current sprint:
     Refactoring
 
 Current task (Schedule editing with ScheduleSession):
---> Functions to edit tasks
+--> Functions to edit tasks (edit, insert, delete, move)
+    Traversing weeks
     Undo/redo
     Scoring
 
@@ -30,7 +31,9 @@ Before merging to master:
 - Make sure all tests pass with ``pytest flowshop``
 
 Refactoring:
-- ?
+- Set task to have date, start time and end time, instead of start datetime and end
+  datetime
+- Move tests outside of package
 
 ----------------------------------------------------------------------------------------
 

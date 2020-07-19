@@ -38,6 +38,11 @@ class Task:
             for var_name in self.state_vars
         )
 
+    @property
+    def date(self) -> None:
+        """ Get date of task. Note that this is the date of the start time. """
+        return self.start_time.date()
+
     def maximum_points(self) -> float:
         """ Computes maximum possible points for completing task. """
         hours = (self.end_time - self.start_time).total_seconds() / 3600
@@ -46,3 +51,4 @@ class Task:
     def earned_points(self) -> float:
         """ Computes points earned so far based on task completion. """
         return self.maximum_points() * self.completed
+

@@ -1,6 +1,6 @@
 """ Schedule object which holds a set of tasks. """
 
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 
 from flowshop.task import Task
@@ -38,6 +38,45 @@ class Schedule:
         """
 
         return self.tasks.pop(task_index)
+
+    def get_task_index(self, day: date, daily_index: int) -> int:
+        """
+        Get index of the ``daily_index``-th task on day ``day``.
+        """
+
+        # First, find some task whose date is equal to the day we're looking for.
+        task_index = len(self.tasks) // 2
+        low = 0
+        high = len(self.tasks) - 1
+        found = False
+        while low <= high:
+            if self.tasks[task_index].date == day:
+                found = True
+                break
+            else:
+                if self.tasks[task_index].date < day:
+                    low = task_index + 1
+                elif self.tasks[task_index].date > day:
+                    high = task_index - 1
+                task_index = int((low + high) / 2)
+
+        # Make sure that such a task exists.
+        if not found:
+            raise ValueError("No task on day %s" % str(day))
+
+        # Find the first task whose date is equal to ``day``.
+        while self.tasks[task_index].date == day:
+            task_index -= 1
+        task_index += 1
+
+        # Make sure that the final task index has the correct date.
+        task_index += daily_index
+        if self.tasks[task_index].date != day:
+            raise ValueError(
+                "Index %d is larger than number of tasks on day $s" % (daily_index, day)
+            )
+
+        return task_index
 
     def check_for_overlap(self) -> None:
         """
@@ -78,17 +117,13 @@ class Schedule:
         tasks_in_interval = self.tasks_in_interval(start_time, end_time)
         return sum(task.maximum_points() for task in tasks_in_interval)
 
-    def earned_interval_points(
-        self, start_time: datetime, end_time: datetime
-    ) -> float:
+    def earned_interval_points(self, start_time: datetime, end_time: datetime) -> float:
         """ Computes points earned for all tasks overlapping a given time interval.  """
 
         tasks_in_interval = self.tasks_in_interval(start_time, end_time)
         return sum(task.earned_points() for task in tasks_in_interval)
 
-    def tasks_in_interval(
-        self, start_time: datetime, end_time: datetime
-    ) -> List[Task]:
+    def tasks_in_interval(self, start_time: datetime, end_time: datetime) -> List[Task]:
         """
         Returns a list of all tasks in the schedule that overlap the interval
         (start_time, end_time).
