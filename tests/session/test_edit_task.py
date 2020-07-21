@@ -8,5 +8,3 @@ def test_edit_task():
     """
 
     raise NotImplementedError
-
-

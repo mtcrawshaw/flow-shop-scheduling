@@ -3,9 +3,10 @@
 from collections import deque
 from datetime import date, timedelta
 from copy import deepcopy
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Any
 
 from flowshop.schedule import Schedule
+from flowshop.task import Task
 from flowshop.files import saved_session_exists, save_session, load_session_state_dict
 
 
@@ -32,7 +33,12 @@ class Session:
         self.base_date = None
 
         # State variables that are saved and loaded during pickling.
-        self.state_vars: List[str] = ["name", "edit_history", "history_pos", "base_date"]
+        self.state_vars: List[str] = [
+            "name",
+            "edit_history",
+            "history_pos",
+            "base_date",
+        ]
 
         # Load a session in, if necessary.
         if load:
@@ -41,17 +47,24 @@ class Session:
         else:
 
             # Check to make sure there exists no saved session with given name.
-            if save_exists(name):
+            if saved_session_exists(name):
                 raise ValueError("Already a saved session with name %s." % name)
 
             # Initialize edit history with empty schedules, and set base date to the
-            # Monday of the current week.
-            self.edit_history.append((Schedule(), Schedule()))
+            # Monday of the current week. The 0-th entry is the planned schedule, and
+            # the 1-st entry is the actual schedule.
+            self.edit_history.append(
+                (Schedule("%s_planned" % self.name), Schedule("%s_actual" % self.name))
+            )
             self.history_pos = 0
             self.base_date = date.today()
             self.base_date -= timedelta(days=self.base_date.weekday())
 
-    def load_from(self, str: name) -> None:
+    def save(self) -> None:
+        """ Save session to file. """
+        save_session(self)
+
+    def load_from(self, name: str) -> None:
         """ Load session info from saved session. """
 
         # Check to make sure saved session exists.
@@ -66,7 +79,7 @@ class Session:
         """ Copy state from state dict. """
 
         for state_var in self.state_vars:
-            setattr(self, state_var, state_dict["state_var"])
+            setattr(self, state_var, state_dict[state_var])
 
     def state_dict(self) -> Dict[str, Any]:
         """ Return dictionary holding state variables. """
@@ -103,14 +116,13 @@ class Session:
             if (planned, actual) != self.edit_history[self.history_pos + 1]:
 
                 # Second case.
-                self.edit_history = self.edit_history[:self.history_pos + 1]
+                self.edit_history = self.edit_history[: self.history_pos + 1]
                 self.edit_history.append((planned, actual))
                 self.history_pos += 1
             else:
 
                 # Third case.
                 self.history_pos += 1
-
 
     def edit_task(
         self, planned: bool, day: int, task_index: int, new_values: Dict[str, Any]
@@ -171,7 +183,7 @@ class Session:
         day: int,
         start_task_index: int,
         end_task_index: int,
-        time_delta: datetime.time_delta,
+        time_delta: timedelta,
     ) -> None:
         """ Move a contiguous sequence of tasks in time. """
 

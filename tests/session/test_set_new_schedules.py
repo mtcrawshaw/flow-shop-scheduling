@@ -8,5 +8,3 @@ def test_set_new_schedules():
     """
 
     raise NotImplementedError
-
-

@@ -8,5 +8,3 @@ def test_move_tasks():
     """
 
     raise NotImplementedError
-
-

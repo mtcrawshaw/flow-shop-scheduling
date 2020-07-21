@@ -18,6 +18,18 @@ class Schedule:
             self.tasks = list(tasks)
             self._sort_tasks()
             self.check_for_overlap()
+        else:
+            self.tasks = []
+
+        self.state_vars = ["name", "tasks"]
+
+    def __eq__(self, other) -> bool:
+        """ Definition of self == other. """
+
+        return all(
+            getattr(self, var_name) == getattr(other, var_name)
+            for var_name in self.state_vars
+        )
 
     def add_task(self, task: Task) -> None:
         """
@@ -28,7 +40,9 @@ class Schedule:
         self.tasks += [task]
 
         # This is a redundant sorting, since self.tasks gets sorted in
-        # self.check_for_overlap().
+        # self.check_for_overlap(). We just do this to be safe, in case
+        # self.check_for_overlap() changes later. We take the extra computation time for
+        # a safety need.
         self._sort_tasks()
         self.check_for_overlap()
 

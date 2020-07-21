@@ -51,4 +51,3 @@ class Task:
     def earned_points(self) -> float:
         """ Computes points earned so far based on task completion. """
         return self.maximum_points() * self.completed
-
