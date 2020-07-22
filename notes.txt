@@ -22,6 +22,10 @@ Current task (Schedule editing with ScheduleSession):
     Undo/redo
     Scoring
 
+Notes for current task:
+Write tests for edit_task, delete_task, then implement move_tasks(), then
+write tests for move_tasks().
+
 ----------------------------------------------------------------------------------------
 
 Before merging to master:
