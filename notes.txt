@@ -28,12 +28,12 @@ Before merging to master:
 - Lint with ``black flowshop``
 - Fix typing issues with ``mypy flowshop``
 - Maximize pylint score with ``pylint flowshop``
-- Make sure all tests pass with ``pytest flowshop``
+- Make sure all tests pass with ``pytest tests``
 
 Refactoring:
 - Set task to have date, start time and end time, instead of start datetime and end
   datetime
-- Move tests outside of package
+- Remove "completed" from task. With planned/actual schedules, there is no need for it
 
 ----------------------------------------------------------------------------------------
 

@@ -74,7 +74,7 @@ def test_insert_task_empty_planned():
 
 def test_insert_task_nonempty_actual():
     """
-    Insert a task into the planned schedule of an empty session.
+    Insert a task into the actual schedule of a nonempty session.
     """
 
     # Construct session.
@@ -107,10 +107,104 @@ def test_insert_task_nonempty_actual():
     assert session.edit_history[-1][1].tasks[2] == task
 
 
-def test_others():
+def test_insert_task_nonempty_planned():
     """
-    We should also add some cases to check that tasks get sorted correctly, and where an
-    overlapping task is given.
+    Insert a task into the planned schedule of a nonempty session.
     """
 
-    raise NotImplementedError
+    # Construct session.
+    session = Session("example", load=True)
+
+    # Store pre-insert session values.
+    pre_history_pos = session.history_pos
+    pre_edit_history = list(session.edit_history)
+
+    # Insert task.
+    task = Task(
+        "test",
+        priority=1.0,
+        start_time=datetime(2020, 5, 1, hour=15),
+        end_time=datetime(2020, 5, 1, hour=16),
+    )
+    session.insert_task(
+        planned=True, task=task,
+    )
+
+    # Test session values.
+    assert session.history_pos == pre_history_pos + 1
+    assert len(session.edit_history) == len(pre_edit_history) + 1
+    assert session.edit_history[:-1] == pre_edit_history
+    assert session.edit_history[-1][1] == pre_edit_history[-1][1]
+    assert (
+        list_exclude(session.edit_history[-1][0].tasks, 2)
+        == pre_edit_history[-1][0].tasks
+    )
+    assert session.edit_history[-1][0].tasks[2] == task
+
+
+def test_insert_task_sorted():
+    """
+    Insert a task into the actual schedule of a nonempty session, and check that the new
+    task gets sorted correctly.
+    """
+
+    # Construct session.
+    session = Session("example", load=True)
+
+    # Store pre-insert session values.
+    pre_history_pos = session.history_pos
+    pre_edit_history = list(session.edit_history)
+
+    # Insert task.
+    task = Task(
+        "test",
+        priority=1.0,
+        start_time=datetime(2020, 5, 2, hour=12, minute=30),
+        end_time=datetime(2020, 5, 2, hour=13),
+    )
+    session.insert_task(
+        planned=False, task=task,
+    )
+
+    # Test session values.
+    assert session.history_pos == pre_history_pos + 1
+    assert len(session.edit_history) == len(pre_edit_history) + 1
+    assert session.edit_history[:-1] == pre_edit_history
+    assert session.edit_history[-1][0] == pre_edit_history[-1][0]
+    assert (
+        list_exclude(session.edit_history[-1][1].tasks, 3)
+        == pre_edit_history[-1][1].tasks
+    )
+    assert session.edit_history[-1][1].tasks[3] == task
+
+
+def test_insert_task_overlap():
+    """
+    Insert an invalid (overlapping) task into the planned schedule of a nonempty
+    session, and check that an error gets raised.
+    """
+
+    # Construct session.
+    session = Session("example", load=True)
+
+    # Store pre-insert session values.
+    pre_history_pos = session.history_pos
+    pre_edit_history = list(session.edit_history)
+
+    # Insert task.
+    error = False
+    task = Task(
+        "test",
+        priority=1.0,
+        start_time=datetime(2020, 5, 2, hour=13),
+        end_time=datetime(2020, 5, 2, hour=14),
+    )
+    try:
+        session.insert_task(
+            planned=True, task=task,
+        )
+    except:
+        error = True
+
+    # Ensure error was thrown.
+    assert error
