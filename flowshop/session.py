@@ -86,7 +86,7 @@ class Session:
 
         return {state_var: getattr(self, state_var) for state_var in self.state_vars}
 
-    def _get_current_schedules(self) -> Tuple[Schedule, Schedule]:
+    def current_schedules(self) -> Tuple[Schedule, Schedule]:
         """ Return schedules at current point in edit history. """
 
         return self.edit_history[self.history_pos]
@@ -124,13 +124,24 @@ class Session:
                 # Third case.
                 self.history_pos += 1
 
+    def get_task(self, planned: bool, day: int, task_index: int) -> None:
+        """
+        Return a task from planned/actual, given a day and a task index.
+        """
+
+        planned_schedule, actual_schedule = self.current_schedules()
+        target = planned_schedule if planned else actual_schedule
+        date = self.base_date + timedelta(days=day)
+        overall_index = target.get_task_index(date, task_index)
+        return target.tasks[overall_index]
+
     def edit_task(
         self, planned: bool, day: int, task_index: int, new_values: Dict[str, Any]
     ) -> None:
         """ Edit a task in the current session by providing new values. """
 
         # Create new schedule objects to represent edited schedules.
-        current_schedules = self.edit_history[self.history_pos]
+        current_schedules = self.current_schedules()
         new_planned = deepcopy(current_schedules[0])
         new_actual = deepcopy(current_schedules[1])
 
@@ -149,7 +160,7 @@ class Session:
         """ Insert a task into the current session. """
 
         # Create new schedule objects to represent edited schedules.
-        current_schedules = self.edit_history[self.history_pos]
+        current_schedules = self.current_schedules()
         new_planned = deepcopy(current_schedules[0])
         new_actual = deepcopy(current_schedules[1])
 
@@ -164,7 +175,7 @@ class Session:
         """ Delete a task in the current session. """
 
         # Create new schedule objects to represent edited schedules.
-        current_schedules = self.edit_history[self.history_pos]
+        current_schedules = self.current_schedules()
         new_planned = deepcopy(current_schedules[0])
         new_actual = deepcopy(current_schedules[1])
 

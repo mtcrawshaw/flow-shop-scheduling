@@ -81,5 +81,5 @@ EXAMPLE_TASKS = (
             start_time=datetime(2020, 6, 3, hour=2, minute=30),
             end_time=datetime(2020, 6, 3, hour=2, minute=59),
         ),
-    ]
+    ],
 )
