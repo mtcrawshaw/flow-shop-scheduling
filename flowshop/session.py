@@ -152,6 +152,7 @@ class Session:
         for param, new_val in new_values.items():
             setattr(target.tasks[overall_index], param, new_val)
         target._sort_tasks()
+        target.check_for_overlap()
 
         # Set new schedule objects as current schedules.
         self._set_new_schedules(new_planned, new_actual)
