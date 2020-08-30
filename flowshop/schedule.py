@@ -79,7 +79,7 @@ class Schedule:
             raise ValueError("No task on day %s" % str(day))
 
         # Find the first task whose date is equal to ``day``.
-        while self.tasks[task_index].date == day:
+        while task_index >= 0 and self.tasks[task_index].date == day:
             task_index -= 1
         task_index += 1
 

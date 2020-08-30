@@ -3,15 +3,10 @@ Unit test cases for insert_task() in flowshop/session.py.
 """
 
 from datetime import datetime
-from typing import List, Any
 
 from flowshop.session import Session
 from flowshop.task import Task
-
-
-def list_exclude(l: List[Any], index: int) -> List[Any]:
-    """ Helper function to exclude a single element from a list. """
-    return l[:index] + l[index + 1 :]
+from flowshop.utils import list_exclude
 
 
 def test_insert_task_empty_actual():

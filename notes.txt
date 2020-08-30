@@ -25,8 +25,7 @@ Current task (Schedule editing with ScheduleSession):
     Refactoring
 
 Notes for current task:
-Write tests for edit_task, delete_task, then implement move_tasks(), then
-write tests for move_tasks().
+Implement and write tests for move_tasks().
 
 ----------------------------------------------------------------------------------------
 
