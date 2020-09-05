@@ -91,7 +91,7 @@ def test_delete_task_full():
     day = 5
     task_index = 0
 
-    # Store pre-insert session values.
+    # Store pre-delete session values.
     pre_history_pos = session.history_pos
     pre_edit_history = list(session.edit_history)
     original_task = session.get_task(planned=planned, day=day, task_index=task_index)
@@ -104,7 +104,9 @@ def test_delete_task_full():
     assert len(session.edit_history) == len(pre_edit_history) + 1
     assert session.edit_history[:-1] == pre_edit_history
     assert pre_edit_history[-1][0].tasks[2] == original_task
-    assert session.edit_history[-1][0].tasks == list_exclude(pre_edit_history[-1][0].tasks, 2)
+    assert session.edit_history[-1][0].tasks == list_exclude(
+        pre_edit_history[-1][0].tasks, 2
+    )
     assert session.edit_history[-1][1] == pre_edit_history[-1][1]
 
 

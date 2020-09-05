@@ -95,7 +95,10 @@ def test_edit_task_time_invalid():
     planned = True
     day = 4
     task_index = 0
-    new_values = {"start_time": datetime(2020, 5, 1, hour=13), "end_time": datetime(2020, 5, 1, hour=14)}
+    new_values = {
+        "start_time": datetime(2020, 5, 1, hour=13),
+        "end_time": datetime(2020, 5, 1, hour=14),
+    }
 
     # Edit task in a way that creates overlap, i.e. should throw an error.
     error = False
@@ -124,7 +127,10 @@ def test_edit_task_time_sorted():
     planned = True
     day = 5
     task_index = 1
-    new_values = {"start_time": datetime(2020, 5, 2, hour=10), "end_time": datetime(2020, 5, 2, hour=11)}
+    new_values = {
+        "start_time": datetime(2020, 5, 2, hour=10),
+        "end_time": datetime(2020, 5, 2, hour=11),
+    }
 
     # Store pre-insert session values.
     pre_history_pos = session.history_pos
@@ -146,4 +152,3 @@ def test_edit_task_time_sorted():
     assert pre_edit_history[-1][0].tasks[3] == original_task
     assert session.edit_history[-1][0].tasks[2] == new_task
     assert session.edit_history[-1][1] == pre_edit_history[-1][1]
-

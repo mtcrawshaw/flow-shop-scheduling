@@ -199,4 +199,21 @@ class Session:
     ) -> None:
         """ Move a contiguous sequence of tasks in time. """
 
-        raise NotImplementedError
+        # Create new schedule objects to represent edited schedules.
+        current_schedules = self.current_schedules()
+        new_planned = deepcopy(current_schedules[0])
+        new_actual = deepcopy(current_schedules[1])
+
+        # Set values in new schedule objects.
+        target = new_planned if planned else new_actual
+        date = self.base_date + timedelta(days=day)
+        overall_start_index = target.get_task_index(date, start_task_index)
+        overall_end_index = overall_start_index + (end_task_index - start_task_index)
+        for task_index in range(overall_start_index, overall_end_index):
+            target.tasks[task_index].start_time += time_delta
+            target.tasks[task_index].end_time += time_delta
+        target._sort_tasks()
+        target.check_for_overlap()
+
+        # Set new schedule objects as current schedules.
+        self._set_new_schedules(new_planned, new_actual)

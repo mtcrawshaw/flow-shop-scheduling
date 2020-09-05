@@ -17,15 +17,14 @@ Current sprint (Weekly schedule of tasks):
     Refactoring
 
 Current task (Schedule editing with ScheduleSession):
---> Functions to edit tasks (edit, insert, delete, move)
-    Traversing weeks
+    Functions to edit tasks (edit, insert, delete, move)
+--> Traversing weeks
     Undo/redo
     Tests for different cases of _set_new_schedules()
     Scoring
     Refactoring
 
 Notes for current task:
-Implement and write tests for move_tasks().
 
 ----------------------------------------------------------------------------------------
 
