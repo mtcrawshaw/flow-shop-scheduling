@@ -124,6 +124,13 @@ class Session:
                 # Third case.
                 self.history_pos += 1
 
+    def move_week(self, forward: bool = True) -> None:
+        """
+        Move the displayed days forward or backward one week in time.
+        """
+
+        self.base_date += (1 if forward else -1) * timedelta(days=7)
+
     def get_task(self, planned: bool, day: int, task_index: int) -> None:
         """
         Return a task from planned/actual, given a day and a task index.
