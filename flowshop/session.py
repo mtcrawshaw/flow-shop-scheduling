@@ -224,3 +224,15 @@ class Session:
 
         # Set new schedule objects as current schedules.
         self._set_new_schedules(new_planned, new_actual)
+
+    def undo(self) -> None:
+        """
+        Undo last change, i.e. move to previous schedule in edit history.
+        """
+        self.history_pos = max(self.history_pos - 1, 0)
+
+    def redo(self) -> None:
+        """
+        Redo last change, i.e. move to next schedule in edit history.
+        """
+        self.history_pos = min(self.history_pos + 1, len(self.edit_history) - 1)

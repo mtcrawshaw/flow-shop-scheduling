@@ -18,9 +18,9 @@ Current sprint (Weekly schedule of tasks):
 
 Current task (Schedule editing with ScheduleSession):
     Functions to edit tasks (edit, insert, delete, move)
---> Traversing weeks
+    Traversing weeks
     Undo/redo
-    Tests for different cases of _set_new_schedules()
+--> Tests for different cases of _set_new_schedules()
     Scoring
     Refactoring
 
@@ -38,6 +38,8 @@ Refactoring:
 - Set task to have date, start time and end time, instead of start datetime and end
   datetime
 - Remove "completed" from task. With planned/actual schedules, there is no need for it
+- Use class to access .planned and .actual instead of having tuple of planned, actual
+  and using session.edit_history[0]/session.edit_history[1].
 
 ----------------------------------------------------------------------------------------
 
