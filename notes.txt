@@ -26,6 +26,13 @@ Current task (Schedule editing with ScheduleSession):
 
 Notes for current task:
 
+Steps to implement scoring:
+1. Remove completed from task, fix all breaks from there.
+2. Compute planned points and earned points in Session for each individual day.
+3. Compute cumulative/total planned/earned points in Session from beginning of week to
+   each individual day.
+4. Compute cumulative/total score in Session for week.
+
 ----------------------------------------------------------------------------------------
 
 Before merging to master:
@@ -37,10 +44,11 @@ Before merging to master:
 Refactoring:
 - Set task to have date, start time and end time, instead of start datetime and end
   datetime
-- Remove "completed" from task. With planned/actual schedules, there is no need for it
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].
 - Import Schedule, Session in flowshop/__init__.py to make imports cleaner.
+- Rewrite Schedule.tasks_in_interval() to use binary search instead of linear search
+  (tasks are sorted by time!).
 
 ----------------------------------------------------------------------------------------
 

@@ -9,7 +9,6 @@ class Task:
     def __init__(
         self,
         name: str,
-        completed: float = 0.0,
         priority: float = None,
         start_time: datetime = None,
         end_time: datetime = None,
@@ -17,12 +16,11 @@ class Task:
         """ Init function for Task object. """
 
         self.name = name
-        self.completed = completed
         self.priority = priority
         self.start_time = start_time
         self.end_time = end_time
 
-        self.state_vars = ["name", "completed", "priority", "start_time", "end_time"]
+        self.state_vars = ["name", "priority", "start_time", "end_time"]
 
     def __repr__(self) -> str:
         """ Returns string representation of task. """
@@ -43,11 +41,7 @@ class Task:
         """ Get date of task. Note that this is the date of the start time. """
         return self.start_time.date()
 
-    def maximum_points(self) -> float:
-        """ Computes maximum possible points for completing task. """
+    def points(self) -> float:
+        """ Computes points for completing task. """
         hours = (self.end_time - self.start_time).total_seconds() / 3600
         return self.priority * hours
-
-    def earned_points(self) -> float:
-        """ Computes points earned so far based on task completion. """
-        return self.maximum_points() * self.completed
