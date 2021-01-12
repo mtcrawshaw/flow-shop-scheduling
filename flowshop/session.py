@@ -91,15 +91,15 @@ class Session:
 
         return self.edit_history[self.history_pos]
 
-    def _set_new_schedules(self, planned: Schedule, actual: Schedule) -> None:
+    def set_new_schedules(self, planned: Schedule, actual: Schedule) -> None:
         """
         Set a new pair of schedules at the current position in the edit history. If
-        necessary, we overwrite the edit history. There are one of three cases. The
-        first is that the history position is maximal (i.e. there is nothing to redo),
-        in which case we append the new schedules to the history and increment the
-        history position. The second is that the history position doesn't point to the
-        end of history, and the new schedules aren't equal to the next point in history.
-        In this case we wipe the history which comes after the current point, append the
+        necessary, we overwrite the edit history. There are three cases. The first is
+        that the history position is maximal (i.e. there is nothing to redo), in which
+        case we append the new schedules to the history and increment the history
+        position. The second is that the history position doesn't point to the end of
+        history, and the new schedules aren't equal to the next point in history.  In
+        this case we wipe the history which comes after the current point, append the
         new schedules to the history, and increment the history position. Finally, if
         the history position doesn't point to the end of history, but the new schedules
         are equal to the next point in history, we simply increment the history position
@@ -162,7 +162,7 @@ class Session:
         target.check_for_overlap()
 
         # Set new schedule objects as current schedules.
-        self._set_new_schedules(new_planned, new_actual)
+        self.set_new_schedules(new_planned, new_actual)
 
     def insert_task(self, planned: bool, task: Task) -> None:
         """ Insert a task into the current session. """
@@ -177,7 +177,7 @@ class Session:
         target.add_task(task)
 
         # Set new schedule objects as current schedules.
-        self._set_new_schedules(new_planned, new_actual)
+        self.set_new_schedules(new_planned, new_actual)
 
     def delete_task(self, planned: bool, day: int, task_index: int) -> None:
         """ Delete a task in the current session. """
@@ -194,7 +194,7 @@ class Session:
         target.remove_task(overall_index)
 
         # Set new schedule objects as current schedules.
-        self._set_new_schedules(new_planned, new_actual)
+        self.set_new_schedules(new_planned, new_actual)
 
     def move_tasks(
         self,
@@ -223,7 +223,7 @@ class Session:
         target.check_for_overlap()
 
         # Set new schedule objects as current schedules.
-        self._set_new_schedules(new_planned, new_actual)
+        self.set_new_schedules(new_planned, new_actual)
 
     def undo(self) -> None:
         """

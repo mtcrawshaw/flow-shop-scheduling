@@ -31,6 +31,11 @@ class Schedule:
             for var_name in self.state_vars
         )
 
+    def __str__(self) -> str:
+        """ String representation of `self`. """
+
+        return str({key: getattr(self, key) for key in self.state_vars})
+
     def add_task(self, task: Task) -> None:
         """
         Adds a task to self.tasks. Checks to ensure that task isn't overlapping an

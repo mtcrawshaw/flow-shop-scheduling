@@ -148,4 +148,3 @@ def test_undo_filled_actual():
     assert session.history_pos == old_history_pos
     assert old_planned == new_planned
     assert old_actual == new_actual
-

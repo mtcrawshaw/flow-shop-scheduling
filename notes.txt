@@ -20,8 +20,8 @@ Current task (Schedule editing with ScheduleSession):
     Functions to edit tasks (edit, insert, delete, move)
     Traversing weeks
     Undo/redo
---> Tests for different cases of _set_new_schedules()
-    Scoring
+    Tests for different cases of _set_new_schedules()
+--> Scoring
     Refactoring
 
 Notes for current task:
@@ -40,6 +40,7 @@ Refactoring:
 - Remove "completed" from task. With planned/actual schedules, there is no need for it
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].
+- Import Schedule, Session in flowshop/__init__.py to make imports cleaner.
 
 ----------------------------------------------------------------------------------------
 
