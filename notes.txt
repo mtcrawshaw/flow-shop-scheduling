@@ -28,10 +28,10 @@ Notes for current task:
 
 Steps to implement scoring:
 1. Remove completed from task, fix all breaks from there.
-2. Compute planned points and earned points in Session for each individual day.
-3. Compute cumulative/total planned/earned points in Session from beginning of week to
-   each individual day.
-4. Compute cumulative/total score in Session for week.
+2. Compute daily/cumulative/total planned/earned points in current week.
+3. Compute daily/cumulative/total score in Session for week.
+
+Need tests for tasks_in_interval, daily_points(), and daily_score().
 
 ----------------------------------------------------------------------------------------
 

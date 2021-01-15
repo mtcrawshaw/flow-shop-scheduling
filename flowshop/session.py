@@ -1,7 +1,7 @@
 """ Session object for editing schedules. """
 
 from collections import deque
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 from copy import deepcopy
 from typing import List, Tuple, Dict, Any
 
@@ -226,13 +226,40 @@ class Session:
         self.set_new_schedules(new_planned, new_actual)
 
     def undo(self) -> None:
-        """
-        Undo last change, i.e. move to previous schedule in edit history.
-        """
+        """ Undo last change, i.e. move to previous schedule in edit history. """
         self.history_pos = max(self.history_pos - 1, 0)
 
     def redo(self) -> None:
-        """
-        Redo last change, i.e. move to next schedule in edit history.
-        """
+        """ Redo last change, i.e. move to next schedule in edit history. """
         self.history_pos = min(self.history_pos + 1, len(self.edit_history) - 1)
+
+    def daily_points(self, day: int, planned: bool, cumulative: bool) -> float:
+        """
+        Compute points for a given day in the current week, either for planned or actual
+        schedule and potentially cumulative from the beginning of the week.
+        """
+
+        # Construct interval over which to compute points.
+        current_date = self.base_date + timedelta(days=day)
+        start = self.base_date if cumulative else current_date
+        end = current_date + timedelta(days=1)
+        start_time = datetime(start.year, start.month, start.day)
+        end_time = datetime(end.year, end.month, end.day)
+
+        # Compute points in interval.
+        planned_schedule, actual_schedule = self.current_schedules()
+        schedule = planned_schedule if planned else actual_schedule
+        tasks = schedule.tasks_in_interval(start_time, end_time)
+        points = sum(task.points() for task in tasks)
+
+        return points
+
+    def daily_score(self, day: int, cumulative: bool) -> float:
+        """
+        Compute score for a given day in the current week, either for the individual day
+        or cumulative from the beginning of the week.
+        """
+
+        planned_points = self.daily_points(day, planned=True, cumulative=cumulative)
+        actual_points = self.daily_points(day, planned=False, cumulative=cumulative)
+        return 100.0 * actual_points / planned_points
