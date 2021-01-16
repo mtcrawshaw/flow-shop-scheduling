@@ -5,7 +5,7 @@ Unit test cases for edit_task() in flowshop/session.py.
 from copy import deepcopy
 from datetime import timedelta, datetime
 
-from flowshop.session import Session
+from flowshop import Session
 
 
 def test_edit_task_name():

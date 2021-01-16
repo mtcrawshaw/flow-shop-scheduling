@@ -4,8 +4,7 @@ Unit test cases for delete_task() in flowshop/session.py.
 
 from datetime import datetime, timedelta, date, time
 
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Session, Task
 from flowshop.utils import list_exclude
 
 

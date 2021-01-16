@@ -37,7 +37,6 @@ Before merging to master:
 Refactoring:
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].
-- Import Schedule, Session in flowshop/__init__.py to make imports cleaner.
 - Rewrite Schedule.tasks_in_interval() to use binary search instead of linear search
   (tasks are sorted by time!).
 

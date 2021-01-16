@@ -4,9 +4,7 @@ Unit test cases for set_new_schedules() in flowshop/session.py.
 
 from datetime import datetime
 
-from flowshop.schedule import Schedule
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Schedule, Session, Task
 
 
 def test_set_new_schedules_1():

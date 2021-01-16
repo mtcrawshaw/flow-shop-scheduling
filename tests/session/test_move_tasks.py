@@ -5,8 +5,7 @@ Unit test cases for move_tasks() in flowshop/session.py.
 from datetime import datetime, timedelta, time
 from copy import deepcopy
 
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Session, Task
 
 
 def test_move_tasks_single_planned():

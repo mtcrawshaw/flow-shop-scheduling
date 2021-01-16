@@ -4,9 +4,7 @@ Unit test cases for daily_points() and daily_score() in flowshop/session.py.
 
 from datetime import datetime, time, timedelta
 
-from flowshop.schedule import Schedule
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Session, Schedule, Task
 
 
 DAYS_IN_WEEK = 7

@@ -4,9 +4,7 @@ Unit test cases for flowshop/task.py.
 
 from datetime import datetime, date
 
-
-from flowshop.schedule import Schedule
-from flowshop.task import Task
+from flowshop import Schedule, Task
 
 
 def test_get_task_index_valid():

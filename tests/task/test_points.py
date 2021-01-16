@@ -4,7 +4,7 @@ Unit test cases for flowshop/task.py.
 
 from datetime import datetime
 
-from flowshop.task import Task
+from flowshop import Task
 
 
 def test_points_small():

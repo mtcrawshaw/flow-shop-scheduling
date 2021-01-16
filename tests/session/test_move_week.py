@@ -5,8 +5,7 @@ Unit test cases for move_week() in flowshop/session.py.
 from datetime import date, timedelta
 from copy import deepcopy
 
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Session, Task
 
 
 def test_move_week_forward():

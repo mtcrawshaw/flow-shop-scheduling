@@ -2,7 +2,7 @@
 Unit test cases for load_from() in flowshop/session.py.
 """
 
-from flowshop.session import Session
+from flowshop import Session
 from flowshop.utils import EXAMPLE_TASKS
 
 

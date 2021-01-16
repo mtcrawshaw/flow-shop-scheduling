@@ -4,8 +4,7 @@ Unit test cases for undo() in flowshop/session.py.
 
 from datetime import datetime, timedelta, time
 
-from flowshop.session import Session
-from flowshop.task import Task
+from flowshop import Session, Task
 
 
 def test_undo_empty_planned():
