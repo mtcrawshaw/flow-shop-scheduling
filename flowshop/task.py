@@ -1,6 +1,6 @@
 """ Task object definition. Represents a single task in a schedule. """
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 class Task:
@@ -37,7 +37,7 @@ class Task:
         )
 
     @property
-    def date(self) -> None:
+    def date(self) -> date:
         """ Get date of task. Note that this is the date of the start time. """
         return self.start_time.date()
 

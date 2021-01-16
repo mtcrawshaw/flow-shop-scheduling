@@ -72,12 +72,12 @@ class Schedule:
             if self.tasks[task_index].date == day:
                 found = True
                 break
-            else:
-                if self.tasks[task_index].date < day:
-                    low = task_index + 1
-                elif self.tasks[task_index].date > day:
-                    high = task_index - 1
-                task_index = int((low + high) / 2)
+
+            if self.tasks[task_index].date < day:
+                low = task_index + 1
+            elif self.tasks[task_index].date > day:
+                high = task_index - 1
+            task_index = int((low + high) / 2)
 
         # Make sure that such a task exists.
         if not found:
@@ -92,7 +92,7 @@ class Schedule:
         task_index += daily_index
         if self.tasks[task_index].date != day:
             raise ValueError(
-                "Index %d is larger than number of tasks on day $s" % (daily_index, day)
+                "Index %d is larger than number of tasks on day %s" % (daily_index, day)
             )
 
         return task_index

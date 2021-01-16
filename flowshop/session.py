@@ -1,6 +1,5 @@
 """ Session object for editing schedules. """
 
-from collections import deque
 from datetime import datetime, date, time, timedelta
 from copy import deepcopy
 from typing import List, Tuple, Dict, Any
@@ -138,8 +137,8 @@ class Session:
 
         planned_schedule, actual_schedule = self.current_schedules()
         target = planned_schedule if planned else actual_schedule
-        date = self.base_date + timedelta(days=day)
-        overall_index = target.get_task_index(date, task_index)
+        task_date = self.base_date + timedelta(days=day)
+        overall_index = target.get_task_index(task_date, task_index)
         return target.tasks[overall_index]
 
     def edit_task(
@@ -154,8 +153,8 @@ class Session:
 
         # Set values in new schedule objects.
         target = new_planned if planned else new_actual
-        date = self.base_date + timedelta(days=day)
-        overall_index = target.get_task_index(date, task_index)
+        task_date = self.base_date + timedelta(days=day)
+        overall_index = target.get_task_index(task_date, task_index)
         for param, new_val in new_values.items():
             setattr(target.tasks[overall_index], param, new_val)
         target._sort_tasks()
@@ -181,8 +180,8 @@ class Session:
         new_actual = deepcopy(current_schedules[1])
 
         # Construct task.
-        date = self.base_date + timedelta(days=day)
-        start = datetime.combine(date, start_time)
+        task_date = self.base_date + timedelta(days=day)
+        start = datetime.combine(task_date, start_time)
         end = start + timedelta(hours=hours)
         task = Task(name, priority, start, end)
 
@@ -203,8 +202,8 @@ class Session:
 
         # Set values in new schedule objects.
         target = new_planned if planned else new_actual
-        date = self.base_date + timedelta(days=day)
-        overall_index = target.get_task_index(date, task_index)
+        task_date = self.base_date + timedelta(days=day)
+        overall_index = target.get_task_index(task_date, task_index)
         target.remove_task(overall_index)
 
         # Set new schedule objects as current schedules.
@@ -227,8 +226,8 @@ class Session:
 
         # Set values in new schedule objects.
         target = new_planned if planned else new_actual
-        date = self.base_date + timedelta(days=day)
-        overall_start_index = target.get_task_index(date, start_task_index)
+        task_date = self.base_date + timedelta(days=day)
+        overall_start_index = target.get_task_index(task_date, start_task_index)
         overall_end_index = overall_start_index + (end_task_index - start_task_index)
         for task_index in range(overall_start_index, overall_end_index):
             target.tasks[task_index].start_time += time_delta

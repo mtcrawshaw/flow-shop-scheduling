@@ -11,20 +11,16 @@ Road Map:
 
 Current sprint (Weekly schedule of tasks):
     Task/Schedule classes
---> Schedule editing with ScheduleSession
-    Runner to interact with session via terminal
+    Schedule editing with ScheduleSession
+--> Runner to interact with session via terminal
     Dump schedule to google drive
     Refactoring
 
-Current task (Schedule editing with ScheduleSession):
-    Functions to edit tasks (edit, insert, delete, move)
-    Traversing weeks
-    Undo/redo
-    Tests for different cases of _set_new_schedules()
-    Scoring
---> Refactoring
+Current task (Runner to interact with session via terminal):
+?
 
 Notes for current task:
+Gotta plan terminal runner!
 
 ----------------------------------------------------------------------------------------
 

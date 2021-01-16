@@ -6,9 +6,9 @@ from typing import List, Any
 from flowshop.task import Task
 
 
-def list_exclude(l: List[Any], index: int) -> List[Any]:
+def list_exclude(vals: List[Any], index: int) -> List[Any]:
     """ Helper function to exclude a single element from a list. """
-    return l[:index] + l[index + 1 :]
+    return vals[:index] + vals[index + 1 :]
 
 
 EXAMPLE_TASKS = (
