@@ -1,7 +1,7 @@
 """ Session object for editing schedules. """
 
 from collections import deque
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, time, timedelta
 from copy import deepcopy
 from typing import List, Tuple, Dict, Any
 
@@ -164,13 +164,27 @@ class Session:
         # Set new schedule objects as current schedules.
         self.set_new_schedules(new_planned, new_actual)
 
-    def insert_task(self, planned: bool, task: Task) -> None:
+    def insert_task(
+        self,
+        day: int,
+        planned: bool,
+        name: str,
+        priority: float,
+        start_time: time,
+        hours: float,
+    ) -> None:
         """ Insert a task into the current session. """
 
         # Create new schedule objects to represent edited schedules.
         current_schedules = self.current_schedules()
         new_planned = deepcopy(current_schedules[0])
         new_actual = deepcopy(current_schedules[1])
+
+        # Construct task.
+        date = self.base_date + timedelta(days=day)
+        start = datetime.combine(date, start_time)
+        end = start + timedelta(hours=hours)
+        task = Task(name, priority, start, end)
 
         # Set values in new schedule objects.
         target = new_planned if planned else new_actual

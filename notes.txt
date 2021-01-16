@@ -35,8 +35,6 @@ Before merging to master:
 - Make sure all tests pass with ``pytest tests``
 
 Refactoring:
-- Set task to have date, start time and end time, instead of start datetime and end
-  datetime
 - Change Session.add_task() and other methods so that we don't have to include a date.
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].

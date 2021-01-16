@@ -2,7 +2,7 @@
 Unit test cases for insert_task() in flowshop/session.py.
 """
 
-from datetime import datetime
+from datetime import datetime, time, timedelta
 
 from flowshop.session import Session
 from flowshop.task import Task
@@ -18,14 +18,13 @@ def test_insert_task_empty_actual():
     session = Session("test")
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=0,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
 
     # Test session values.
@@ -35,7 +34,13 @@ def test_insert_task_empty_actual():
     assert len(session.edit_history[0][1].tasks) == 0
     assert len(session.edit_history[1][0].tasks) == 0
     assert len(session.edit_history[1][1].tasks) == 1
-    assert session.edit_history[1][1].tasks[0] == task
+    task = session.edit_history[1][1].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time == datetime.combine(session.base_date, time(hour=12))
+    assert task.end_time == datetime.combine(
+        session.base_date, time(hour=13, minute=30)
+    )
 
 
 def test_insert_task_empty_planned():
@@ -47,14 +52,13 @@ def test_insert_task_empty_planned():
     session = Session("test")
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=True, task=task,
+        day=0,
+        planned=True,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
 
     # Test session values.
@@ -64,7 +68,13 @@ def test_insert_task_empty_planned():
     assert len(session.edit_history[0][1].tasks) == 0
     assert len(session.edit_history[1][0].tasks) == 1
     assert len(session.edit_history[1][1].tasks) == 0
-    assert session.edit_history[1][0].tasks[0] == task
+    task = session.edit_history[1][0].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time == datetime.combine(session.base_date, time(hour=12))
+    assert task.end_time == datetime.combine(
+        session.base_date, time(hour=13, minute=30)
+    )
 
 
 def test_insert_task_nonempty_actual():
@@ -80,14 +90,13 @@ def test_insert_task_nonempty_actual():
     pre_edit_history = list(session.edit_history)
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=15),
-        end_time=datetime(2020, 5, 1, hour=16),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=4,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=15),
+        hours=1,
     )
 
     # Test session values.
@@ -99,7 +108,15 @@ def test_insert_task_nonempty_actual():
         list_exclude(session.edit_history[-1][1].tasks, 2)
         == pre_edit_history[-1][1].tasks
     )
-    assert session.edit_history[-1][1].tasks[2] == task
+    task = session.edit_history[-1][1].tasks[2]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time == datetime.combine(
+        session.base_date, time(hour=15)
+    ) + timedelta(days=4)
+    assert task.end_time == datetime.combine(
+        session.base_date, time(hour=16)
+    ) + timedelta(days=4)
 
 
 def test_insert_task_nonempty_planned():
@@ -122,7 +139,12 @@ def test_insert_task_nonempty_planned():
         end_time=datetime(2020, 5, 1, hour=16),
     )
     session.insert_task(
-        planned=True, task=task,
+        day=4,
+        planned=True,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=15),
+        hours=1,
     )
 
     # Test session values.
@@ -134,7 +156,15 @@ def test_insert_task_nonempty_planned():
         list_exclude(session.edit_history[-1][0].tasks, 2)
         == pre_edit_history[-1][0].tasks
     )
-    assert session.edit_history[-1][0].tasks[2] == task
+    task = session.edit_history[-1][0].tasks[2]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time == datetime.combine(
+        session.base_date, time(hour=15)
+    ) + timedelta(days=4)
+    assert task.end_time == datetime.combine(
+        session.base_date, time(hour=16)
+    ) + timedelta(days=4)
 
 
 def test_insert_task_sorted():
@@ -151,14 +181,13 @@ def test_insert_task_sorted():
     pre_edit_history = list(session.edit_history)
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 2, hour=12, minute=30),
-        end_time=datetime(2020, 5, 2, hour=13),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=5,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12, minute=30),
+        hours=0.5,
     )
 
     # Test session values.
@@ -170,7 +199,15 @@ def test_insert_task_sorted():
         list_exclude(session.edit_history[-1][1].tasks, 3)
         == pre_edit_history[-1][1].tasks
     )
-    assert session.edit_history[-1][1].tasks[3] == task
+    task = session.edit_history[-1][1].tasks[3]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time == datetime.combine(
+        session.base_date, time(hour=12, minute=30)
+    ) + timedelta(days=5)
+    assert task.end_time == datetime.combine(
+        session.base_date, time(hour=13)
+    ) + timedelta(days=5)
 
 
 def test_insert_task_overlap():
@@ -188,17 +225,16 @@ def test_insert_task_overlap():
 
     # Insert task.
     error = False
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 2, hour=13),
-        end_time=datetime(2020, 5, 2, hour=14),
-    )
     try:
         session.insert_task(
-            planned=True, task=task,
+            day=5,
+            planned=True,
+            name="test",
+            priority=1.0,
+            start_time=time(hour=13),
+            hours=1,
         )
-    except:
+    except ValueError:
         error = True
 
     # Ensure error was thrown.
