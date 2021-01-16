@@ -2,3 +2,4 @@ __pycache__
 *.swp
 .mypy_cache
 data/
+!data/example.pkl
