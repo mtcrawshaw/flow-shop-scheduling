@@ -21,17 +21,10 @@ Current task (Schedule editing with ScheduleSession):
     Traversing weeks
     Undo/redo
     Tests for different cases of _set_new_schedules()
---> Scoring
-    Refactoring
+    Scoring
+--> Refactoring
 
 Notes for current task:
-
-Steps to implement scoring:
-1. Remove completed from task, fix all breaks from there.
-2. Compute daily/cumulative/total planned/earned points in current week.
-3. Compute daily/cumulative/total score in Session for week.
-
-Need tests for tasks_in_interval, daily_points(), and daily_score().
 
 ----------------------------------------------------------------------------------------
 
@@ -44,6 +37,7 @@ Before merging to master:
 Refactoring:
 - Set task to have date, start time and end time, instead of start datetime and end
   datetime
+- Change Session.add_task() and other methods so that we don't have to include a date.
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].
 - Import Schedule, Session in flowshop/__init__.py to make imports cleaner.

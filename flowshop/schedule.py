@@ -138,11 +138,10 @@ class Schedule:
                 task.start_time >= start_time and task.start_time < end_time
             )
             overlapping_end = task.end_time > start_time and task.end_time <= end_time
-            surrounding = task.start_time <= start_time and task.end_time <= end_time
+            surrounding = task.start_time <= start_time and task.end_time >= end_time
             if overlapping_start or overlapping_end or surrounding:
                 tasks_in_interval.append(task)
 
-        print("tasks in interval: %s" % tasks_in_interval)
         return tasks_in_interval
 
     def _sort_tasks(self):

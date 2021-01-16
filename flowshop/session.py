@@ -262,4 +262,10 @@ class Session:
 
         planned_points = self.daily_points(day, planned=True, cumulative=cumulative)
         actual_points = self.daily_points(day, planned=False, cumulative=cumulative)
-        return 100.0 * actual_points / planned_points
+
+        if planned_points == 0.0:
+            score = 100.0
+        else:
+            score = 100.0 * actual_points / planned_points
+
+        return score
