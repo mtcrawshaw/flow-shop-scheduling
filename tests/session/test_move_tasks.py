@@ -2,7 +2,7 @@
 Unit test cases for move_tasks() in flowshop/session.py.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from copy import deepcopy
 
 from flowshop.session import Session
@@ -17,14 +17,13 @@ def test_move_tasks_single_planned():
     # Construct session. Note that we have to manually set the base date of the session
     # in order to access the task, since it has a hard-coded date.
     session = Session("test")
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=True, task=task,
+        day=4,
+        planned=True,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
     session.base_date = session.current_schedules()[0].tasks[0].start_time.date()
     session.base_date -= timedelta(days=session.base_date.weekday())
@@ -39,9 +38,6 @@ def test_move_tasks_single_planned():
     )
 
     # Test session values.
-    edited_task = deepcopy(task)
-    edited_task.start_time = datetime(2020, 5, 1, hour=14)
-    edited_task.end_time = datetime(2020, 5, 1, hour=15, minute=30)
     assert session.history_pos == 2
     assert len(session.edit_history) == 3
     assert len(session.edit_history[0][0].tasks) == 0
@@ -50,7 +46,13 @@ def test_move_tasks_single_planned():
     assert len(session.edit_history[1][1].tasks) == 0
     assert len(session.edit_history[2][0].tasks) == 1
     assert len(session.edit_history[2][1].tasks) == 0
-    assert session.edit_history[2][0].tasks[0] == edited_task
+    task = session.edit_history[2][0].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time.date() == session.base_date + timedelta(days=4)
+    assert task.start_time.time() == time(hour=14)
+    assert task.end_time.date() == session.base_date + timedelta(days=4)
+    assert task.end_time.time() == time(hour=15, minute=30)
 
 
 def test_move_tasks_single_actual():
@@ -61,17 +63,14 @@ def test_move_tasks_single_actual():
     # Construct session. Note that we have to manually set the base date of the session
     # in order to access the task, since it has a hard-coded date.
     session = Session("test")
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=4,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
-    session.base_date = session.current_schedules()[1].tasks[0].start_time.date()
-    session.base_date -= timedelta(days=session.base_date.weekday())
 
     # Move the task.
     session.move_tasks(
@@ -83,9 +82,6 @@ def test_move_tasks_single_actual():
     )
 
     # Test session values.
-    edited_task = deepcopy(task)
-    edited_task.start_time = datetime(2020, 5, 1, hour=14)
-    edited_task.end_time = datetime(2020, 5, 1, hour=15, minute=30)
     assert session.history_pos == 2
     assert len(session.edit_history) == 3
     assert len(session.edit_history[0][0].tasks) == 0
@@ -94,7 +90,13 @@ def test_move_tasks_single_actual():
     assert len(session.edit_history[1][1].tasks) == 1
     assert len(session.edit_history[2][0].tasks) == 0
     assert len(session.edit_history[2][1].tasks) == 1
-    assert session.edit_history[2][1].tasks[0] == edited_task
+    task = session.edit_history[2][1].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time.date() == session.base_date + timedelta(days=4)
+    assert task.start_time.time() == time(hour=14)
+    assert task.end_time.date() == session.base_date + timedelta(days=4)
+    assert task.end_time.time() == time(hour=15, minute=30)
 
 
 def test_move_tasks_full():

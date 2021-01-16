@@ -2,7 +2,7 @@
 Unit test cases for daily_points() and daily_score() in flowshop/session.py.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 
 from flowshop.schedule import Schedule
 from flowshop.session import Session
@@ -51,61 +51,53 @@ def test_daily_points_score_current_week():
     session = Session("test")
     b = session.base_date
     planned_tasks = [
-        Task(
-            "pt1",
-            priority=1.0,
-            start_time=(datetime(b.year, b.month, b.day, hour=12) + timedelta(days=1)),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "pt2",
-            priority=2.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=1)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "pt3",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=3)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=3)
-            ),
-        ),
+        {
+            "day": 1,
+            "planned": True,
+            "name": "pt1",
+            "priority": 1.0,
+            "start_time": time(hour=12),
+            "hours": 1.5,
+        },
+        {
+            "day": 1,
+            "planned": True,
+            "name": "pt1",
+            "priority": 2.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": 3,
+            "planned": True,
+            "name": "pt3",
+            "priority": 1.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
     ]
     actual_tasks = [
-        Task(
-            "at2",
-            priority=2.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=14, minute=30) + timedelta(days=1)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "at3",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=19, minute=30) + timedelta(days=3)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=21, minute=30) + timedelta(days=3)
-            ),
-        ),
+        {
+            "day": 1,
+            "planned": False,
+            "name": "at2",
+            "priority": 2.0,
+            "start_time": time(hour=14, minute=30),
+            "hours": 1.0,
+        },
+        {
+            "day": 3,
+            "planned": False,
+            "name": "at3",
+            "priority": 1.0,
+            "start_time": time(hour=19, minute=30),
+            "hours": 2.0,
+        },
     ]
-    for task in planned_tasks:
-        session.insert_task(task=task, planned=True)
-    for task in actual_tasks:
-        session.insert_task(task=task, planned=False)
+    for task_kwargs in planned_tasks:
+        session.insert_task(**task_kwargs)
+    for task_kwargs in actual_tasks:
+        session.insert_task(**task_kwargs)
 
     # Construct expected point/score values.
     p_ind_pts = [0.0, 5.5, 0.0, 2.0, 0.0, 0.0, 0.0]
@@ -142,109 +134,85 @@ def test_daily_points_score_full():
     session = Session("test")
     b = session.base_date
     planned_tasks = [
-        Task(
-            "pt1",
-            priority=1.0,
-            start_time=(datetime(b.year, b.month, b.day, hour=12) + timedelta(days=1)),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "pt2",
-            priority=2.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=1)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "pt3",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30) + timedelta(days=3)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=3)
-            ),
-        ),
-        Task(
-            "pt4",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30)
-                + timedelta(days=10)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30)
-                + timedelta(days=10)
-            ),
-        ),
-        Task(
-            "pt5",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=13, minute=30)
-                + timedelta(days=-10)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30)
-                + timedelta(days=-10)
-            ),
-        ),
+        {
+            "day": 1,
+            "planned": True,
+            "name": "pt1",
+            "priority": 1.0,
+            "start_time": time(hour=12),
+            "hours": 1.5,
+        },
+        {
+            "day": 1,
+            "planned": True,
+            "name": "pt2",
+            "priority": 2.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": 3,
+            "planned": True,
+            "name": "pt3",
+            "priority": 1.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": 10,
+            "planned": True,
+            "name": "pt4",
+            "priority": 1.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": -10,
+            "planned": True,
+            "name": "pt5",
+            "priority": 1.0,
+            "start_time": time(hour=13, minute=30),
+            "hours": 2.0,
+        },
     ]
     actual_tasks = [
-        Task(
-            "at2",
-            priority=2.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=14, minute=30) + timedelta(days=1)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=15, minute=30) + timedelta(days=1)
-            ),
-        ),
-        Task(
-            "at3",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=19, minute=30) + timedelta(days=3)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=21, minute=30) + timedelta(days=3)
-            ),
-        ),
-        Task(
-            "at4",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=19, minute=30)
-                + timedelta(days=10)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=21, minute=30)
-                + timedelta(days=10)
-            ),
-        ),
-        Task(
-            "at5",
-            priority=1.0,
-            start_time=(
-                datetime(b.year, b.month, b.day, hour=19, minute=30)
-                + timedelta(days=-10)
-            ),
-            end_time=(
-                datetime(b.year, b.month, b.day, hour=21, minute=30)
-                + timedelta(days=-10)
-            ),
-        ),
+        {
+            "day": 1,
+            "planned": False,
+            "name": "at2",
+            "priority": 2.0,
+            "start_time": time(hour=14, minute=30),
+            "hours": 1.0,
+        },
+        {
+            "day": 3,
+            "planned": False,
+            "name": "at3",
+            "priority": 1.0,
+            "start_time": time(hour=19, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": 10,
+            "planned": False,
+            "name": "at4",
+            "priority": 1.0,
+            "start_time": time(hour=19, minute=30),
+            "hours": 2.0,
+        },
+        {
+            "day": -10,
+            "planned": False,
+            "name": "at5",
+            "priority": 1.0,
+            "start_time": time(hour=19, minute=30),
+            "hours": 2.0,
+        },
     ]
-    for task in planned_tasks:
-        session.insert_task(task=task, planned=True)
-    for task in actual_tasks:
-        session.insert_task(task=task, planned=False)
+    for task_kwargs in planned_tasks:
+        session.insert_task(**task_kwargs)
+    for task_kwargs in actual_tasks:
+        session.insert_task(**task_kwargs)
 
     # Construct expected point/score values.
     p_ind_pts = [0.0, 5.5, 0.0, 2.0, 0.0, 0.0, 0.0]

@@ -2,7 +2,7 @@
 Unit test cases for redo() in flowshop/session.py.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 from flowshop.session import Session
 from flowshop.task import Task
@@ -17,14 +17,13 @@ def test_redo_empty_planned():
     session = Session("test")
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=True, task=task,
+        day=4,
+        planned=True,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
 
     # Store session values.
@@ -44,7 +43,13 @@ def test_redo_empty_planned():
     assert len(session.edit_history[0][1].tasks) == 0
     assert len(session.edit_history[1][0].tasks) == 1
     assert len(session.edit_history[1][1].tasks) == 0
-    assert session.edit_history[1][0].tasks[0] == task
+    task = session.edit_history[1][0].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time.date() == session.base_date + timedelta(days=4)
+    assert task.start_time.time() == time(hour=12)
+    assert task.end_time.date() == session.base_date + timedelta(days=4)
+    assert task.end_time.time() == time(hour=13, minute=30)
 
 
 def test_redo_empty_actual():
@@ -56,14 +61,13 @@ def test_redo_empty_actual():
     session = Session("test")
 
     # Insert task.
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=4,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
 
     # Store session values.
@@ -83,7 +87,13 @@ def test_redo_empty_actual():
     assert len(session.edit_history[0][1].tasks) == 0
     assert len(session.edit_history[1][0].tasks) == 0
     assert len(session.edit_history[1][1].tasks) == 1
-    assert session.edit_history[1][1].tasks[0] == task
+    task = session.edit_history[1][1].tasks[0]
+    assert task.name == "test"
+    assert task.priority == 1.0
+    assert task.start_time.date() == session.base_date + timedelta(days=4)
+    assert task.start_time.time() == time(hour=12)
+    assert task.end_time.date() == session.base_date + timedelta(days=4)
+    assert task.end_time.time() == time(hour=13, minute=30)
 
 
 def test_redo_edge():

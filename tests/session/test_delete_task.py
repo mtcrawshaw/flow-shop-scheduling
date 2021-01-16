@@ -2,7 +2,7 @@
 Unit test cases for delete_task() in flowshop/session.py.
 """
 
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 from flowshop.session import Session
 from flowshop.task import Task
@@ -17,14 +17,13 @@ def test_delete_task_single_planned():
     # Construct session. Note that we have to manually set the base date of the session
     # in order to access the task, since it has a hard-coded date.
     session = Session("test")
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=True, task=task,
+        day=4,
+        planned=True,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
     session.base_date = session.current_schedules()[0].tasks[0].start_time.date()
     session.base_date -= timedelta(days=session.base_date.weekday())
@@ -51,14 +50,13 @@ def test_delete_task_single_actual():
     # Construct session. Note that we have to manually set the base date of the session
     # in order to access the task, since it has a hard-coded date.
     session = Session("test")
-    task = Task(
-        "test",
-        priority=1.0,
-        start_time=datetime(2020, 5, 1, hour=12),
-        end_time=datetime(2020, 5, 1, hour=13, minute=30),
-    )
     session.insert_task(
-        planned=False, task=task,
+        day=4,
+        planned=False,
+        name="test",
+        priority=1.0,
+        start_time=time(hour=12),
+        hours=1.5,
     )
     session.base_date = session.current_schedules()[1].tasks[0].start_time.date()
     session.base_date -= timedelta(days=session.base_date.weekday())

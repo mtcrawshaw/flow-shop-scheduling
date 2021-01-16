@@ -35,7 +35,6 @@ Before merging to master:
 - Make sure all tests pass with ``pytest tests``
 
 Refactoring:
-- Change Session.add_task() and other methods so that we don't have to include a date.
 - Use class to access .planned and .actual instead of having tuple of planned, actual
   and using session.edit_history[0]/session.edit_history[1].
 - Import Schedule, Session in flowshop/__init__.py to make imports cleaner.
