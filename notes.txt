@@ -17,15 +17,15 @@ Current sprint (Weekly schedule of tasks):
     Refactoring
 
 Current task (Runner to interact with session via terminal):
---> TerminalSession skeleton
-    main.py (Loads a session if one is given, otherwise starts a new one)
+    TerminalSession skeleton
+--> main.py (Loads a session if one is given, otherwise starts a new one)
     Display session
     Navigate by character with h, j, k, l
     Navigate by task instead of by character (highlight selected box)
     Navigate by day with J/K
-    Edit task: Enter edit mode with e, arrow keys to change fields, Enter to submit
+    Edit task: Enter edit mode with e, arrow keys and tab/Shift+tab to change fields, Enter to submit
     Insert/append task: i/a to put task before/after, then goes into edit mode
-    Delete task: d
+    Delete task: d (D to delete and move other tasks back to fill space)
     Move task(s): v to enter move mode, j/k to highlight tasks to move, Enter once, type number of hours, Enter to submit
     Undo/redo: u, r
     Advance week: n to go forward and N to go back
@@ -33,6 +33,7 @@ Current task (Runner to interact with session via terminal):
     Quit: Ctrl-q
     Load: Ctrl-l
     New: Ctrl-n
+    Refactoring
 
 Notes for current task:
 
