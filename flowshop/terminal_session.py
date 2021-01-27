@@ -1,8 +1,7 @@
 """ Interface definition for running a Session from the terminal. """
 
-from enum import Enum
-
 from flowshop.session import Session
+from flowshop.utils import Direction
 
 
 class TerminalSession:
@@ -59,12 +58,3 @@ class TerminalSession:
     def new(self) -> None:
         """ Start a new, blank session. """
         pass
-
-
-class Direction(Enum):
-    """ Type to specify a direction for the cursor to move. """
-
-    RIGHT = 0
-    UP = 1
-    LEFT = 2
-    DOWN = 3

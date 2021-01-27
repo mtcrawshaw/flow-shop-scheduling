@@ -18,8 +18,8 @@ Current sprint (Weekly schedule of tasks):
 
 Current task (Runner to interact with session via terminal):
     TerminalSession skeleton
---> main.py (Loads a session if one is given, otherwise starts a new one)
-    Display session
+    main.py (Loads a session if one is given, otherwise starts a new one)
+--> Display session
     Navigate by character with h, j, k, l
     Navigate by task instead of by character (highlight selected box)
     Navigate by day with J/K
@@ -50,6 +50,10 @@ Refactoring:
   and using session.edit_history[0]/session.edit_history[1].
 - Rewrite Schedule.tasks_in_interval() to use binary search instead of linear search
   (tasks are sorted by time!).
+
+Future additions:
+- Command to "swap" a task: Highlight a task, press "swap" key, then when cursor moves
+  the task moves with it, with other tasks sliding in to fill the space left behind.
 
 ----------------------------------------------------------------------------------------
 

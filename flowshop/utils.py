@@ -1,5 +1,6 @@
 """ Utilities for flowshop. """
 
+from enum import Enum
 from datetime import datetime
 from typing import List, Any
 
@@ -89,3 +90,12 @@ EXAMPLE_TASKS = (
         ),
     ],
 )
+
+
+class Direction(Enum):
+    """ Type to specify a direction for the cursor to move in a session. """
+
+    RIGHT = 0
+    UP = 1
+    LEFT = 2
+    DOWN = 3
