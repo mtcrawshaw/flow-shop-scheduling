@@ -7,6 +7,9 @@ from typing import List, Any
 from flowshop.task import Task
 
 
+DAYS_IN_WEEK = 7
+
+
 def list_exclude(vals: List[Any], index: int) -> List[Any]:
     """ Helper function to exclude a single element from a list. """
     return vals[:index] + vals[index + 1 :]

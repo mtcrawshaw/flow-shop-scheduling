@@ -36,6 +36,9 @@ Current task (Runner to interact with session via terminal):
     Refactoring
 
 Notes for current task:
+Add tests for Session.num_tasks().
+
+Next time: Continue implementing TerminalSession._display(). Need to draw task pads.
 
 ----------------------------------------------------------------------------------------
 
@@ -50,6 +53,7 @@ Refactoring:
   and using session.edit_history[0]/session.edit_history[1].
 - Rewrite Schedule.tasks_in_interval() to use binary search instead of linear search
   (tasks are sorted by time!).
+- Make session.current_schedules() a property.
 
 Future additions:
 - Command to "swap" a task: Highlight a task, press "swap" key, then when cursor moves

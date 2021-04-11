@@ -50,6 +50,7 @@ if __name__ == "__main__":
     tasks = planned_tasks + actual_tasks
     earliest_start = min([task.start_time for task in tasks])
     session.base_date = earliest_start - timedelta(days=earliest_start.weekday())
+    session.base_date = session.base_date.date()
 
     # Save session.
     session.save()

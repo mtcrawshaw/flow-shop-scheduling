@@ -130,7 +130,23 @@ class Session:
 
         self.base_date += (1 if forward else -1) * timedelta(days=7)
 
-    def get_task(self, planned: bool, day: int, task_index: int) -> None:
+    def num_daily_tasks(self, planned: bool, day: int) -> int:
+        """ Return number of planned or actual tasks on a given day. """
+
+        # Construct interval to get tasks from.
+        start = self.base_date + timedelta(days=day)
+        end = start + timedelta(days=1)
+        start_time = datetime(start.year, start.month, start.day)
+        end_time = datetime(end.year, end.month, end.day)
+
+        # Get tasks from interval.
+        planned_schedule, actual_schedule = self.current_schedules()
+        target = planned_schedule if planned else actual_schedule
+        daily_tasks = target.tasks_in_interval(start_time, end_time)
+
+        return len(daily_tasks)
+
+    def get_task(self, planned: bool, day: int, task_index: int) -> Task:
         """
         Return a task from planned/actual, given a day and a task index.
         """
