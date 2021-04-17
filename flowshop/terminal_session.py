@@ -8,8 +8,12 @@ from flowshop.session import Session
 from flowshop.utils import Direction, DAYS_IN_WEEK
 
 
+# Constants that determine the size of on-screen boxes.
 TASK_HEIGHT = 3
-TASK_WIDTH = 50
+NAME_WIDTH = 25
+PRIORITY_WIDTH = 7
+TIME_WIDTH = 11
+TASK_WIDTH = NAME_WIDTH + PRIORITY_WIDTH + 2 * TIME_WIDTH
 TASKS_PER_DAY = 3
 DAY_HEIGHT = TASK_HEIGHT * TASKS_PER_DAY
 DAY_WIDTH = TASK_WIDTH * 2
@@ -31,44 +35,83 @@ class TerminalSession:
     def _run(self, stdscr) -> None:
         """ Runs the session. Only needs to be called once at beginning of session. """
 
+        # Store number of rows and number of columns.
+        self.nrows, self.ncols = stdscr.getmaxyx()
+
         # Clear screen.
         stdscr.clear()
 
         # Display the current session and wait for a key press.
-        self._display(stdscr)
+        self._display()
 
-        # Wait for 5 seconds to see screen.
-        sleep(5)
+        # Wait.
+        sleep(10)
 
-    def _display(self, stdscr) -> None:
+    def _display(self) -> None:
         """ Displays the session. Called any time the screen must be refreshed. """
 
-        planned, actual = self.session.current_schedules()
-        nrows, ncols = stdscr.getmaxyx()
-
-        # Create pads for each task indexed by day, version, and task index.
+        # Draw boxes for each task.
         for day in range(DAYS_IN_WEEK):
-            day_versions = []
-            day_y = day * DAY_HEIGHT
-
             for planned in [True, False]:
-                version_tasks = []
-                planned_x = 0 if planned else TASK_WIDTH
+                for task_idx in range(self.session.num_daily_tasks(planned, day)):
+                    self._draw_task(planned, day, task_idx)
 
-                for task in range(self.session.num_daily_tasks(planned, day)):
+    def _draw_task(self, planned: bool, day: int, task_idx: int) -> None:
+        """ Draw the specified task. """
 
-                    # Create single pad for task.
-                    top = day_y + task * TASK_HEIGHT
-                    left = planned_x
-                    bottom = top + TASK_HEIGHT
-                    right = left + TASK_WIDTH
-                    msg = self.session.get_task(planned, day, task).name
-                    draw_box(nrows, ncols, top, left, bottom, right, msg=msg)
+        # Get task and coordinates of box.
+        task = self.session.get_task(planned, day, task_idx)
+        planned_x = 0 if planned else TASK_WIDTH
+        day_y = day * DAY_HEIGHT
+        top = day_y + task_idx * TASK_HEIGHT
+        bottom = top + TASK_HEIGHT
 
-                    # START HERE. Instead of drawing a single box for each task, we want
-                    # to draw multiple boxes: one for name, one for priority, a couple
-                    # for start/end time.
-                    pass
+        # Draw box for task name.
+        name_left = planned_x
+        name_right = name_left + NAME_WIDTH
+        self._draw_box(top, name_left, bottom, name_right, msg=task.name)
+
+        # Draw box for task priority.
+        priority_left = name_right
+        priority_right = priority_left + PRIORITY_WIDTH
+        self._draw_box(
+            top, priority_left, bottom, priority_right, msg=str(task.priority)
+        )
+
+        # Draw boxes for start/end time.
+        start_left = priority_right
+        start_right = start_left + TIME_WIDTH
+        end_left = start_right
+        end_right = end_left + TIME_WIDTH
+        start_time = task.start_time.strftime("%I:%M%p")
+        end_time = task.end_time.strftime("%I:%M%p")
+        self._draw_box(top, start_left, bottom, start_right, msg=start_time)
+        self._draw_box(top, end_left, bottom, end_right, msg=end_time)
+
+    def _draw_box(
+        self, top: int, left: int, bottom: int, right: int, msg: str = None,
+    ) -> None:
+        """
+        Draws a box (pad with a border) around the given coordinates `top, left, bottom,
+        right`. If `msg` is not None, writes `msg` in the drawn box. If any of the given
+        coordinates are out of bounds, the box does not get drawn and we return normally.
+        """
+
+        # Check for out of bounds coordinates.
+        if top < 0 or bottom >= self.nrows or left < 0 or right >= self.ncols:
+            return
+
+        # Get width and height.
+        height = bottom - top
+        width = right - left
+
+        # Draw box and (potentially) add string.
+        pad = curses.newpad(height, width)
+        pad.box()
+        if msg is not None:
+            center_y = (bottom - top) // 2
+            pad.addstr(center_y, TEXT_OFFSET, msg)
+        pad.refresh(0, 0, top, left, bottom, right)
 
     def navigate(self, direction: Direction, big=False) -> None:
         """
@@ -109,35 +152,3 @@ class TerminalSession:
     def new(self) -> None:
         """ Start a new, blank session. """
         pass
-
-
-def draw_box(
-    nrows: int,
-    ncols: int,
-    top: int,
-    left: int,
-    bottom: int,
-    right: int,
-    msg: str = None,
-) -> None:
-    """
-    Draws a box (pad with a border) around the given coordinates `top, left, bottom,
-    right`. If `msg` is not None, writes `msg` in the drawn box. If any of the given
-    coordinates are out of bounds, the box does not get drawn and we return normally.
-    """
-
-    # Check for out of bounds coordinates.
-    if top < 0 or bottom >= nrows or left < 0 or right >= ncols:
-        return
-
-    # Get width and height.
-    height = bottom - top
-    width = right - left
-
-    # Draw box and (potentially) add string.
-    pad = curses.newpad(height, width)
-    pad.box()
-    if msg is not None:
-        center_y = (bottom - top) // 2
-        pad.addstr(center_y, TEXT_OFFSET, msg)
-    pad.refresh(0, 0, top, left, bottom, right)

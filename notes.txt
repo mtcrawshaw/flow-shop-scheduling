@@ -19,10 +19,10 @@ Current sprint (Weekly schedule of tasks):
 Current task (Runner to interact with session via terminal):
     TerminalSession skeleton
     main.py (Loads a session if one is given, otherwise starts a new one)
---> Display session
-    Navigate by character with h, j, k, l
+    Display session
+--> Navigate by character with h, j, k, l
     Navigate by task instead of by character (highlight selected box)
-    Navigate by day with J/K
+    Navigate by day with {/}
     Edit task: Enter edit mode with e, arrow keys and tab/Shift+tab to change fields, Enter to submit
     Insert/append task: i/a to put task before/after, then goes into edit mode
     Delete task: d (D to delete and move other tasks back to fill space)
@@ -36,9 +36,14 @@ Current task (Runner to interact with session via terminal):
     Refactoring
 
 Notes for current task:
-Add tests for Session.num_tasks().
+Add tests for Session.num_tasks()?
 
-Next time: Continue implementing TerminalSession._display(). Need to draw task pads.
+Refactoring:
+- Change background color and text colors
+- Always have field names in first row
+- Handle task names that are too long
+
+Next time: Start navigation.
 
 ----------------------------------------------------------------------------------------
 
